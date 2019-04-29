@@ -1,0 +1,62 @@
+<!--
+  @Component Name     : CaseCloseButton.cmp
+  @Description        : 
+  @Author             : Abhimanyu Tanwar
+  @Group              : 
+  @Last Modified By   : Abhimanyu Tanwar
+  @Last Modified On   : 4/30/2019, 12:00:05 AM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    4/29/2019, 11:15:11 PM   Abhimanyu Tanwar     Initial Version
+-->
+<aura:component controller="CaseCloseController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+    
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="isModalOpen" type="Boolean" default="false"/>
+    <aura:attribute name="selectedStatusValue" type="String" />
+    <aura:attribute name="caseComment" type="String" />
+    <aura:attribute name="closeStatusList" type="List"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <lightning:button class="slds-m-top_xx-small" label="Close Case" name="Close Case" onclick="{!c.openModel}"/>
+
+    <aura:if isTrue="{!v.isModalOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                            onclick="{!c.closeModel}"
+                                            alternativeText="close"
+                                            variant="bare-inverse"
+                                            class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Close Case</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                    <lightning:select name="mySelect" label="Status" aura:id="mySelect" value="{!v.selectedStatusValue}">
+                        <aura:iteration items="{!v.closeStatusList}" var="item">
+                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                    <br/>
+                    <ui:inputTextArea label="Case Comment" value="{!v.caseComment}"></ui:inputTextArea>
+                    <br/>                        
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral"
+                                        label="Cancel"
+                                        title="Cancel"
+                                        onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand"
+                                        label="Close Case"
+                                        title="Close Case"
+                                        onclick="{!c.closeCaseAction}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>
